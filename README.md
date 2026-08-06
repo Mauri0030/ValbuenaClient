@@ -1,7 +1,7 @@
 
 <h1>
   <img src="https://github.com/mehah/otclient/blob/main/data/images/clienticon.png?raw=true" width="32" alt="logo"/>
-  OTClient - Redemption
+  Valbuena Client
 </h1>
 
 [![Discord Shield](https://discordapp.com/api/guilds/888062548082061433/widget.png?style=shield)](https://discord.gg/tUjTBZzMCy)
