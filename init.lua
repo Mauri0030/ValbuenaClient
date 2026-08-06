@@ -97,8 +97,8 @@ if ENABLE_SERVERS then
     }
 end
 
-g_app.setName("OTClient - Redemption");
-g_app.setCompactName("otclient");
+g_app.setName("Valbuena Client");
+g_app.setCompactName("valbuenaclient");
 g_app.setOrganizationName("otcr");
 
 g_app.hasUpdater = function()
