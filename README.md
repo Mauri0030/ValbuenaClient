@@ -26,8 +26,8 @@
 
 ---
 
-## <a id="what-is-otclient"></a>![Logo](https://raw.githubusercontent.com/mehah/otclient/main/src/otcicon.ico) What is OTClient?
-OTClient is an alternative Tibia client for usage with OTServ. It aims to be **complete** and **flexible**:
+## <a id="What is Valbuena Client?"></a>![Logo](https://raw.githubusercontent.com/mehah/otclient/main/src/otcicon.ico) What is OTClient?
+Valbuena Client is an alternative Tibia client for usage with OTServ. It aims to be **complete** and **flexible**:
 
 - **LUA scripting** for all game interface functionality
 - **CSS-like syntax** for UI design
