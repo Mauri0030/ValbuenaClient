@@ -27,7 +27,7 @@ local currentIndex = 1
 GameStore = {}
 -- == Enums ==--
 GameStore.website = {
-    WEBSITE_GETCOINS = "https://github.com/mehah/otclient",
+    WEBSITE_GETCOINS = "http://73.115.191.150:8080/",
     --IMAGES_URL =  "http://localhost/images/store/" --./game_store --https://docs.opentibiabr.com/opentibiabr/downloads/website-applications/applications#store-for-client-13-1
 }
 

@@ -2,7 +2,7 @@ Module
   name: game_store
   description: game_store cipsoft compatibility with 10.98 - 12.91 - 13.10 - 13.32 - 1340
   author: OTClient team
-  website: https://github.com/mehah/otclient
+  website: http://73.115.191.150:8080/
   sandboxed: true
   scripts: [ game_store ]
   @onLoad: controllerShop:init()
