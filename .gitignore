@@ -330,3 +330,6 @@ android/app/.cxx/
 android/.gradle/
 android/build/
 luajit-src/
+
+build-release/
+build-release-x64/
