@@ -27,6 +27,14 @@ jobs:
           "$HOME/vcpkg/bootstrap-vcpkg.sh"
           echo "VCPKG_ROOT=$HOME/vcpkg" >> "$GITHUB_ENV"
 
+      - name: Generate gitinfo.h
+        run: |
+          cat > src/gitinfo.h <<EOF
+          #define GIT_BRANCH main
+          #define GIT_VERSION 4.x
+          #define GIT_COMMITS 0
+          EOF 
+
       - name: Configure
         run: cmake --preset macos-release
 
