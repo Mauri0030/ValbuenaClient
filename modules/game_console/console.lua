@@ -255,6 +255,11 @@ function consoleController:onInit()
   
     g_keyboard.bindKeyDown('Enter', switchChatOnCall, consolePanel)
     g_keyboard.bindKeyDown('Escape', disableChatOnCall, consolePanel)
+    Keybind.new("Chat", "Toggle WASD Chat Mode", "", "")
+    Keybind.bind("Chat", "Toggle WASD Chat Mode", {{
+    type = KEY_DOWN,
+    callback = toggleChat
+}})
     g_keyboard.bindKeyPress('Ctrl+A', function()
         consoleTextEdit:clearText()
     end, consolePanel)
@@ -470,6 +475,7 @@ end
 
 function consoleController:onTerminate()
     save()
+    Keybind.delete("Chat", "Toggle WASD Chat Mode")
     Keybind.delete("Chat Channel", "Close Current Channel")
     Keybind.delete("Chat Channel", "Next Channel")
     Keybind.delete("Chat Channel", "Previous Channel")
