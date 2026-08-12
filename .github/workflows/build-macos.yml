@@ -29,11 +29,8 @@ jobs:
 
       - name: Generate gitinfo.h
         run: |
-          cat > src/gitinfo.h <<EOF
-          #define GIT_BRANCH main
-          #define GIT_VERSION 4.x
-          #define GIT_COMMITS 0
-          EOF 
+          printf '#define GIT_BRANCH main\n#define GIT_VERSION 4.x\n#define GIT_COMMITS 0\n' > src/gitinfo.h
+          cat src/gitinfo.h
 
       - name: Configure
         run: cmake --preset macos-release
