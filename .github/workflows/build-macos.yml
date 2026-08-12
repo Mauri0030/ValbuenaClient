@@ -1,0 +1,53 @@
+name: Build macOS Client
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-macos-arm64:
+    name: Build macOS Apple Silicon
+    runs-on: macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Install build tools
+        run: |
+          brew install ninja sccache
+
+      - name: Set up vcpkg
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git "$HOME/vcpkg"
+          "$HOME/vcpkg/bootstrap-vcpkg.sh"
+          echo "VCPKG_ROOT=$HOME/vcpkg" >> "$GITHUB_ENV"
+
+      - name: Configure
+        run: cmake --preset macos-release
+
+      - name: Build
+        run: cmake --build --preset macos-release
+
+      - name: Package app
+        run: |
+          mkdir -p release
+          if [ -d "build/macos-release/OTClient.app" ]; then
+            cp -R "build/macos-release/OTClient.app" "release/ValbuenaClient.app"
+          elif [ -d "OTClient.app" ]; then
+            cp -R "OTClient.app" "release/ValbuenaClient.app"
+          else
+            find . -maxdepth 5 -name "*.app"
+            exit 1
+          fi
+          ditto -c -k --sequesterRsrc --keepParent "release/ValbuenaClient.app" "ValbuenaClient-macOS-AppleSilicon.zip"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ValbuenaClient-macOS-AppleSilicon
+          path: ValbuenaClient-macOS-AppleSilicon.zip
