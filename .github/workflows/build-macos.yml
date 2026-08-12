@@ -40,17 +40,24 @@ jobs:
 
       - name: Package app
         run: |
-          mkdir -p release
+          mkdir -p release/ValbuenaClient-macOS-AppleSilicon
+
           if [ -d "build/macos-release/OTClient.app" ]; then
-            cp -R "build/macos-release/OTClient.app" "release/ValbuenaClient.app"
+            cp -R "build/macos-release/OTClient.app" "release/ValbuenaClient-macOS-AppleSilicon/ValbuenaClient.app"
           elif [ -d "OTClient.app" ]; then
-            cp -R "OTClient.app" "release/ValbuenaClient.app"
+            cp -R "OTClient.app" "release/ValbuenaClient-macOS-AppleSilicon/ValbuenaClient.app"
           else
             find . -maxdepth 5 -name "*.app"
             exit 1
           fi
-          ditto -c -k --sequesterRsrc --keepParent "release/ValbuenaClient.app" "ValbuenaClient-macOS-AppleSilicon.zip"
 
+          cp -R data release/ValbuenaClient-macOS-AppleSilicon/data
+          cp -R modules release/ValbuenaClient-macOS-AppleSilicon/modules
+          cp -R mods release/ValbuenaClient-macOS-AppleSilicon/mods
+          cp init.lua release/ValbuenaClient-macOS-AppleSilicon/init.lua
+
+          ditto -c -k --sequesterRsrc --keepParent "release/ValbuenaClient-macOS-AppleSilicon" "ValbuenaClient-macOS-AppleSilicon.zip"
+      
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
