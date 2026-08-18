@@ -1479,6 +1479,12 @@ function init()
     Keybind.new("Windows", "Show/hide battle list", "Ctrl+B", "")
     Keybind.bind("Windows", "Show/hide battle list", {{ type = KEY_DOWN, callback = toggle }})
 
+    Keybind.new("Combat", "Attack next creature in battle list", "", "")
+    Keybind.bind("Combat", "Attack next creature in battle list", {{ type = KEY_DOWN, callback = function() attackNext(false) end }})
+
+    Keybind.new("Combat", "Attack previous creature in battle list", "", "")
+    Keybind.bind("Combat", "Attack previous creature in battle list", {{ type = KEY_DOWN, callback = function() attackNext(true) end }})
+
     -- Setup scrollbar - use default MiniWindow behavior
     local scrollbar = battleWindow:getChildById('miniwindowScrollBar')
     if scrollbar then
@@ -2609,6 +2615,8 @@ function terminate() -- Terminating the Module (unload)
     toggleFilterButton = nil
 
     Keybind.delete("Windows", "Show/hide battle list")
+    Keybind.delete("Combat", "Attack next creature in battle list")
+    Keybind.delete("Combat", "Attack previous creature in battle list")
 
     disconnect(g_game, {
         onAttackingCreatureChange = onAttack,
@@ -2621,3 +2629,4 @@ function terminate() -- Terminating the Module (unload)
     -- Reset connection state
     eventsConnected = false
 end
+
