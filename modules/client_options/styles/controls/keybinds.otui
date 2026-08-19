@@ -90,7 +90,7 @@ UIWidget
 
     QtComboBox
       id: list
-      width: 320
+      width: 210
 
     SmallButton
       id: add
@@ -115,6 +115,18 @@ UIWidget
       width: 45
       !text: tr("Remove")
       @onClick : removePreset()
+
+    SmallButton
+      id: export
+      width: 45
+      !text: tr("Export")
+      @onClick : exportPreset()
+
+    SmallButton
+      id: import
+      width: 45
+      !text: tr("Import")
+      @onClick : importPreset()
   
   SmallReversedQtPanel
     anchors.left: parent.left
@@ -284,3 +296,5 @@ UIWidget
       margin-top: 8
       !text: tr('Reset')
       @onClick : resetActions()
+
+

@@ -29,6 +29,50 @@ local turnKeys = {
     { "Control+Left",  West },
 }
 
+local diagonalKeybinds = {
+    { "Walk North-East", NorthEast },
+    { "Walk North-West", NorthWest },
+    { "Walk South-East", SouthEast },
+    { "Walk South-West", SouthWest },
+}
+
+local function bindDiagonalKeybinds()
+    for _, keyDir in ipairs(diagonalKeybinds) do
+        local name = keyDir[1]
+        local dir = keyDir[2]
+
+        Keybind.new("Movement", name, "", "")
+        Keybind.bind("Movement", name, {
+            {
+                type = KEY_DOWN,
+                alone = true,
+                callback = function()
+                    changeWalkDir(dir)
+                end
+            },
+            {
+                type = KEY_UP,
+                alone = true,
+                callback = function()
+                    changeWalkDir(dir, true)
+                end
+            },
+            {
+                type = KEY_PRESS,
+                callback = function()
+                    smartWalk(dir)
+                end
+            }
+        })
+    end
+end
+
+local function unbindDiagonalKeybinds()
+    for _, keyDir in ipairs(diagonalKeybinds) do
+        Keybind.delete("Movement", keyDir[1])
+    end
+end
+
 WalkController = Controller:new()
 
 --- Stops the smart walking process.
@@ -252,10 +296,12 @@ end
 --- Initializes the WalkController.
 function WalkController:onInit()
     bindKeys()
+    bindDiagonalKeybinds()
 end
 
 function WalkController:onTerminate()
     unbindKeys()
+    unbindDiagonalKeybinds()
 end
 
 --- Sets up game-related events for the WalkController.
@@ -328,3 +374,5 @@ function unbindTurnKey(key)
     g_keyboard.unbindKeyPress(key, gameRootPanel)
     g_keyboard.unbindKeyUp(key, gameRootPanel)
 end
+
+

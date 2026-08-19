@@ -55,6 +55,7 @@ jobs:
           cp -R modules release/ValbuenaClient-macOS-AppleSilicon/modules
           cp -R mods release/ValbuenaClient-macOS-AppleSilicon/mods
           cp init.lua release/ValbuenaClient-macOS-AppleSilicon/init.lua
+          cp README-MAC.txt release/ValbuenaClient-macOS-AppleSilicon/README-MAC.txt
 
           chmod +x "release/ValbuenaClient-macOS-AppleSilicon/ValbuenaClient.app/Contents/MacOS/OTClient"
 
@@ -71,4 +72,5 @@ jobs:
         with:
           name: ValbuenaClient-macOS-AppleSilicon
           path: ValbuenaClient-macOS-AppleSilicon.zip
+
 

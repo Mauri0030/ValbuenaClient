@@ -84,6 +84,88 @@ function removePreset()
     controller.ui:hide()
 end
 
+function getControlsFolderPath(folderName)
+    return g_resources.getWriteDir():gsub("[/\\]+", "\\") .. "controls\\" .. folderName
+end
+
+function exportPreset()
+    local selectedOption = panels.keybindsPanel.presets.list:getCurrentOption()
+    if not selectedOption then
+        displayErrorBox(tr('Export Hotkeys'), tr('No hotkey preset selected.'))
+        return
+    end
+
+    local presetName = selectedOption.text
+
+    if not g_resources.directoryExists("/controls/export") then
+        g_resources.makeDir("/controls/export")
+    end
+
+    Keybind.configs.keybinds[presetName]:save()
+    Keybind.configs.hotkeys[presetName]:save()
+
+    if ApiJson and ApiJson.saveData then
+        ApiJson.saveData()
+    end
+
+    local keybindsPath = Keybind.configs.keybinds[presetName]:getFileName()
+    local hotkeysPath = Keybind.configs.hotkeys[presetName]:getFileName()
+
+    local keybindsContent = g_resources.readFileContents(keybindsPath)
+    local hotkeysContent = g_resources.readFileContents(hotkeysPath)
+
+    g_resources.writeFileContents("/controls/export/keybinds.otml", keybindsContent)
+    g_resources.writeFileContents("/controls/export/hotkeys.otml", hotkeysContent)
+
+    if g_resources.fileExists("/settings/clientoptions.json") then
+        local actionBarContent = g_resources.readFileContents("/settings/clientoptions.json")
+        g_resources.writeFileContents("/controls/export/clientoptions.json", actionBarContent)
+    end
+
+    local exportFolder = getControlsFolderPath("export")
+    g_platform.openDir(exportFolder)
+
+    displayInfoBox(tr('Export Hotkeys'),
+        tr('Export complete.\n\nYour hotkey files were exported to the folder that just opened.\n\nSend these files to another player:\nkeybinds.otml\nhotkeys.otml\nclientoptions.json'))
+end
+
+function importPreset()
+    local selectedOption = panels.keybindsPanel.presets.list:getCurrentOption()
+    if not selectedOption then
+        displayErrorBox(tr('Import Hotkeys'), tr('No hotkey preset selected.'))
+        return
+    end
+
+    local presetName = selectedOption.text
+
+    if not g_resources.directoryExists("/controls/import") then
+        g_resources.makeDir("/controls/import")
+    end
+
+    local importFolder = getControlsFolderPath("import")
+
+    if not g_resources.fileExists("/controls/import/keybinds.otml") or not g_resources.fileExists("/controls/import/hotkeys.otml") then
+        g_platform.openDir(importFolder)
+
+        displayInfoBox(tr('Import Hotkeys'),
+            tr('Import folder opened.\n\nPlace these files inside that folder:\nkeybinds.otml\nhotkeys.otml\nclientoptions.json\n\nThen click Import again.'))
+        return
+    end
+
+    local keybindsContent = g_resources.readFileContents("/controls/import/keybinds.otml")
+    local hotkeysContent = g_resources.readFileContents("/controls/import/hotkeys.otml")
+
+    g_resources.writeFileContents("/controls/keybinds/" .. presetName .. ".otml", keybindsContent)
+    g_resources.writeFileContents("/controls/hotkeys/" .. presetName .. ".otml", hotkeysContent)
+
+    if g_resources.fileExists("/controls/import/clientoptions.json") then
+        local actionBarContent = g_resources.readFileContents("/controls/import/clientoptions.json")
+        g_resources.writeFileContents("/settings/clientoptions.json", actionBarContent)
+    end
+
+    displayInfoBox(tr('Import Hotkeys'),
+        tr('Import complete.\n\nThe imported hotkeys were saved into the currently selected preset:\n%s\n\nRestart the client to fully reload them, including action bar assignments if clientoptions.json was imported.', presetName))
+end
 function okPresetWindow()
     local presetName = presetWindow.field:getText():trim()
     local selectedPreset = panels.keybindsPanel.presets.list:getCurrentOption().text
@@ -774,3 +856,6 @@ function debug()
     local chatModeText = (chatMode == 1) and "Chat mode ON" or (chatMode == 2) and "Chat mode OFF" or "Unknown chat mode"
     print(string.format("The current configuration is: %s, and the mode is: %s", currentOptionText, chatModeText))
 end
+
+
+
