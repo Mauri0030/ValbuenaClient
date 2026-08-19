@@ -56,6 +56,14 @@ jobs:
           cp -R mods release/ValbuenaClient-macOS-AppleSilicon/mods
           cp init.lua release/ValbuenaClient-macOS-AppleSilicon/init.lua
 
+          chmod +x "release/ValbuenaClient-macOS-AppleSilicon/ValbuenaClient.app/Contents/MacOS/OTClient"
+
+          /usr/libexec/PlistBuddy -c "Set :CFBundleExecutable OTClient" "release/ValbuenaClient-macOS-AppleSilicon/ValbuenaClient.app/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleDisplayName ValbuenaClient" "release/ValbuenaClient-macOS-AppleSilicon/ValbuenaClient.app/Contents/Info.plist"
+          /usr/libexec/PlistBuddy -c "Set :CFBundleName ValbuenaClient" "release/ValbuenaClient-macOS-AppleSilicon/ValbuenaClient.app/Contents/Info.plist"
+
+          codesign --force --deep --sign - "release/ValbuenaClient-macOS-AppleSilicon/ValbuenaClient.app"
+
           ditto -c -k --sequesterRsrc --keepParent "release/ValbuenaClient-macOS-AppleSilicon" "ValbuenaClient-macOS-AppleSilicon.zip"
       
       - name: Upload artifact
@@ -63,3 +71,4 @@ jobs:
         with:
           name: ValbuenaClient-macOS-AppleSilicon
           path: ValbuenaClient-macOS-AppleSilicon.zip
+
